@@ -28,7 +28,7 @@
 # jobs are running in this shell will all be displayed automatically when
 # appropriate.
 
-CIACHO_VERSION="0.3"
+CIACHO_VERSION="0.3b"
 
 ### Segment drawing
 # A few utility functions to make it easy and re-usable to draw segmented prompts
@@ -88,42 +88,43 @@ function prompt_ciacho_battery() {
       fi
 			print  -n "$fg_bold[white]$LIGHTNING$(battery_pct_remaining)%%$fg_no_bold[white]"
 		fi
- elif [[ $(uname) == "Linux" ]]; then
-		function battery_is_charging() {
-			! [[ $(acpi 2&>/dev/null | grep -c '^Battery.*Discharging') -gt 0 ]]
-		}
-
-		function battery_pct() {
-			if (( $+commands[acpi] )) ; then
-				echo "$(acpi | cut -f2 -d ',' | tr -cd '[:digit:]')"
-      fi
-    }
-
-    function battery_pct_remaining() {
-      if [ ! $(battery_is_charging) ] ; then
-        battery_pct
-      else
-        echo "External Power"
-      fi
-    }
-
-    function battery_time_remaining() {
-      if [[ $(acpi 2&>/dev/null | grep -c '^Battery.*Discharging') -gt 0 ]] ; then
-        echo $(acpi | cut -f3 -d ',')
-      fi
-    }
-
-    b=$(battery_pct_remaining)
-    if [[ $(acpi 2&>/dev/null | grep -c '^Battery.*Discharging') -gt 0 ]] ; then
-      if [ $b -gt 40 ] ; then
-        prompt_segment green white
-      elif [ $b -gt 20 ] ; then
-        prompt_segment yellow white
-      else
-        prompt_segment red white
-      fi
-     print  -n "$fg_bold[white]$LIGHTNING $(battery_pct_remaining)%%$fg_no_bold[white]"
-    fi
+# Problem with acpi - debug in future
+# elif [[ $(uname) == "Linux" ]]; then
+#		function battery_is_charging() {
+#			! [[ $(acpi 2&>/dev/null | grep -c '^Battery.*Discharging') -gt 0 ]]
+#		}
+#
+#		function battery_pct() {
+#			if (( $+commands[acpi] )) ; then
+#				echo "$(acpi | cut -f2 -d ',' | tr -cd '[:digit:]')"
+#      fi
+#    }
+#
+#    function battery_pct_remaining() {
+#      if [ ! $(battery_is_charging) ] ; then
+#        battery_pct
+#      else
+#        echo "External Power"
+#      fi
+#    }
+#
+#    function battery_time_remaining() {
+#      if [[ $(acpi 2&>/dev/null | grep -c '^Battery.*Discharging') -gt 0 ]] ; then
+#        echo $(acpi | cut -f3 -d ',')
+#      fi
+#    }
+#
+#    b=$(battery_pct_remaining)
+#    if [[ $(acpi 2&>/dev/null | grep -c '^Battery.*Discharging') -gt 0 ]] ; then
+#      if [ $b -gt 40 ] ; then
+#        prompt_segment green white
+#      elif [ $b -gt 20 ] ; then
+#        prompt_segment yellow white
+#      else
+#        prompt_segment red white
+#      fi
+#     print  -n "$fg_bold[white]$LIGHTNING $(battery_pct_remaining)%%$fg_no_bold[white]"
+#    fi
 	fi
 }
 
@@ -264,7 +265,13 @@ prompt_ciacho_git() {
 
 # Dir: current working directory
 prompt_ciacho_dir() {
-  prompt_segment cyan white "$fg_bold[white]%~$fg_no_bold[white]"
+
+local _max_pwd_length="40"
+  if [[ $(echo -n $PWD | wc -c) -gt ${_max_pwd_length} ]]; then
+    prompt_segment cyan white "$fg_bold[white]%-2~ ... %3~$fg_no_bold[white] "
+  else
+  	prompt_segment cyan white "$fg_bold[white]%~$fg_no_bold[white] "
+  fi
 }
 
 

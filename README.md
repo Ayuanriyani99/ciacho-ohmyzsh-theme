@@ -17,4 +17,8 @@ Current directory
 Git status
 User & Host status
 
+### Changelog
+
+0.3b
+ - update dir - Cut off more than 45 characters
 
