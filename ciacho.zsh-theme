@@ -28,7 +28,7 @@
 # jobs are running in this shell will all be displayed automatically when
 # appropriate.
 
-CIACHO_VERSION="0.3b"
+CIACHO_VERSION="0.3c"
 
 ### Segment drawing
 # A few utility functions to make it easy and re-usable to draw segmented prompts
@@ -266,7 +266,7 @@ prompt_ciacho_git() {
 # Dir: current working directory
 prompt_ciacho_dir() {
 
-local _max_pwd_length="40"
+local _max_pwd_length="60"
   if [[ $(echo -n $PWD | wc -c) -gt ${_max_pwd_length} ]]; then
     prompt_segment cyan white "$fg_bold[white]%-2~ ... %3~$fg_no_bold[white] "
   else
@@ -279,16 +279,15 @@ local _max_pwd_length="40"
 prompt_ciacho_context() {
 
   if [[ $(whoami) == root && $(uname) == Darwin ]]; then
-    prompt_segment red white "$fg_bold[cyan]%(!.%{%F{cyan}%}.)@$USER$fg_no_bold[cyan]"
+    prompt_segment yellow magenta "$fg_bold[white]%(!.%{%F{white}%}.)@$USER$fg_no_bold[white]"
   elif [[ $(whoami) == root ]]; then
-    prompt_segment red white "$fg_bold[white]%(!.%{%F{white}%}.)$USER@$fg_bold[cyan]%(!.%{%F{cyan}%}.)%m$fg_no_bold[white]"
+    prompt_segment red black "$fg_bold[white]%(!.%{%F{white}%}.)$USER@$fg_bold[black]%(!.%{%F{black}%}.)%m$fg_no_bold[black]"
 	elif [[ $(uname) == Darwin ]]; then
     prompt_segment cyan white "$fg_bold[white]%(!.%{%F{white}%}.)@$USER$fg_no_bold[white]"
 	elif [[ -n "$SSH_CLIENT" ]]; then
-    prompt_segment magenta white "$fg_bold[white]%(!.%{%F{white}%}.)$USER@$fg_bold[cyan]%(!.%{%F{cyan}%}.)%m$fg_no_bold[white]"
+    prompt_segment black white "$fg_bold[white]%(!.%{%F{white}%}.)$USER@$fg_bold[yellow]%(!.%{%F{yellow}%}.)%m$fg_no_bold[yellow]"
 	else
-    prompt_segment cyan white "$fg_bold[white]%(!.%{%F{white}%}.)@$USER$fg_no_bold[white]"
-    #prompt_segment yellow magenta "$fg_bold[magenta]%(!.%{%F{magenta}%}.)@$USER$fg_no_bold[magenta]"
+    prompt_segment magenta white "$fg_bold[white]%(!.%{%F{white}%}.)@$USER$fg_no_bold[white]"
 	fi 
 }
 
@@ -309,7 +308,6 @@ prompt_ciacho_time() {
 prompt_ciacho_virtual() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment cyan white "$fg_bold[white]%(!.%{%F{white}%}.)@$USER$fg_no_bold[white]"
     prompt_segment blue black "(`basename $virtualenv_path`)"
 	elif [[ -f /etc/vps ]]; then
     prompt_segment blue black "[VPS]"
