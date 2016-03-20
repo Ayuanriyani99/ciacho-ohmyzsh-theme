@@ -22,3 +22,7 @@ User & Host status
 0.3b
  - update dir - Cut off more than 45 characters
 
+0.3c
+ - change displayed colors on username (different colors on root, ssh
+   client, root on OSX)
+
