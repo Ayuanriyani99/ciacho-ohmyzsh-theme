@@ -28,7 +28,12 @@
 # jobs are running in this shell will all be displayed automatically when
 # appropriate.
 
-CIACHO_VERSION="0.3c"
+
+alias ta='tmux -CC attach -t'
+alias tad='tmux -CC attach -d -t'
+alias ts='tmux -CC new-session -s'
+
+CIACHO_VERSION="1.1a"
 
 ### Segment drawing
 # A few utility functions to make it easy and re-usable to draw segmented prompts
@@ -281,7 +286,7 @@ prompt_ciacho_context() {
   if [[ $(whoami) == root && $(uname) == Darwin ]]; then
     prompt_segment yellow magenta "$fg_bold[white]%(!.%{%F{white}%}.)@$USER$fg_no_bold[white]"
   elif [[ $(whoami) == root ]]; then
-    prompt_segment red black "$fg_bold[white]%(!.%{%F{white}%}.)$USER@$fg_bold[black]%(!.%{%F{black}%}.)%m$fg_no_bold[black]"
+    prompt_segment red black "$fg_bold[white]%(!.%{%F{white}%}.)$USER@$fg_bold[magenda]%(!.%{%F{magenda}%}.)%m$fg_no_bold[magenda]"
 	elif [[ $(uname) == Darwin ]]; then
     prompt_segment cyan white "$fg_bold[white]%(!.%{%F{white}%}.)@$USER$fg_no_bold[white]"
 	elif [[ -n "$SSH_CLIENT" ]]; then
@@ -314,12 +319,25 @@ prompt_ciacho_virtual() {
   fi
 }
 
+# SSH
+prompt_ciacho_ssh() {
+  local sshenv="$SSH_CLIENT"
+  if [[ -n $sshenv  ]]; then
+		if [[ $(whoami) == root ]]; then
+			prompt_segment blue red "[SSH]"
+		else
+	    prompt_segment blue black "[SSH]"
+		fi
+  fi
+}
+
+
 prompt_ciacho_main() {
 	RETVAL=$?
 	print -n "\n"
 	prompt_ciacho_battery
 	prompt_ciacho_time
-	prompt_ciacho_virtual
+	prompt_ciacho_ssh
 	prompt_ciacho_context
   prompt_ciacho_git
   prompt_ciacho_dir

@@ -2,7 +2,7 @@
 
 
 <p align=center>
-	<img src="https://dl.dropboxusercontent.com/u/6741388/ciacho-zsh-theme.png" alt="Ciacho ZSH THEME" />
+	<img src="./ciacho-zsh-theme.png" alt="Ciacho ZSH THEME" />
 </p>
 
 
@@ -18,6 +18,9 @@ Git status
 User & Host status
 
 ### Changelog
+
+1.1a 
+ - some changes
 
 0.3b
  - update dir - Cut off more than 45 characters
