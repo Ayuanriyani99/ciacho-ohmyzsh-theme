@@ -17,6 +17,11 @@ Current directory
 Git status
 User & Host status
 
+## How To Install
+
+Put file ciacho.zsh-theme into ~/.oh-my-zsh/custom
+ 
+
 ### Changelog
 
 1.1a 
